@@ -1,0 +1,1112 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\usepackage[normalem]{ulem}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\textbf{Application of Graph Optimization-}
+
+\textbf{University Course Allotment Project}
+
+\includegraphics[width=3.12847in,height=3.12847in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image1.jpeg}
+
+Group Members:
+
+Bhuvan Satrasala-2022A7PS0018G
+
+Ishita Godani-2022A7PS0007G
+
+Trisha Reddy-2022A7PS0009G
+
+\newpage
+
+
+\textbf{\uline{ABSTRACT}}
+This research addresses the optimization of a University Course
+Assignment System, considering faculty categorization, variable course
+loads, and individual preferences. Faculty members, categorized into x1,
+x2, and x3, face course loads of 0.5, 1, and 1.5 per semester. The
+challenge involves maximizing course assignments to faculty while
+adhering to category-based constraints and preferences. Hungarian
+Algorithm is explored for potential solutions. The implementation
+involves constructing bipartite graphs, converting to maximization form,
+and considering faculty categories, course load capacities, and
+preferences. The proposed system aims to offer a flexible and adaptive
+approach to maximize faculty satisfaction.
+\newpage
+\textbf{Contents}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Problem Formulation}
+\item
+  \textbf{Methods Adopted}
+\item
+  \textbf{Results under different test cases}
+\item
+  \textbf{Crash Test}
+\item
+  \textbf{Consistency Report}
+\item
+  \textbf{Bibliography}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+\newpage
+  \textbf{\uline{Problem formulation}}
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    \textbf{Overview}
+  \end{enumerate}
+\end{enumerate}
+
+University course assignment is one of the most crucial parts of a
+university system, influencing both faculty satisfaction and the
+efficient utilization of resources. The University Course Assignment
+System aims to optimize the allocation of courses to faculty members
+within a department. The primary objective is to maximize the number of
+courses assigned to faculty while considering individual preferences,
+professor categories, and course load constraints. In addition, the
+system should explore and provide multiple acceptable combinations of
+assignments.
+
+\textbf{1.2 Problem Statement}
+
+\textbf{Mathematical Representation:}
+
+\begin{itemize}
+\item
+  Sets: Let I be the set of courses, where i∈I.
+\end{itemize}
+
+\begin{quote}
+Let J be the set of professors, where j∈J
+\end{quote}
+
+\begin{itemize}
+\item
+  Parameters: x\textsubscript{ij} \hspace{0pt} is an arbitrary value
+  representing whether course i is assigned to professor j. (1 -- 10 if
+  assigned, 1000 otherwise)
+\item
+  Decision variable: c\textsubscript{ij}\hspace{0pt} is a arbitrary
+  value indicating whether professor j has course i in their preference
+  list. (1 if in preference, 1000 otherwise)
+\item
+  Objective Function: Minimize Z = ∑ \textsubscript{i∈I} ∑
+  \textsubscript{j∈J} c\textsubscript{ij}.x\textsubscript{ij}
+\end{itemize}
+
+\textbf{Faculty Categorization:}
+
+\begin{itemize}
+\item
+  Each category has different course load capacities: 0.5 courses for
+  "x1," 1 course for "x2," and 1.5 courses for "x3."
+\item
+  No professor can have 0 courses in their preference list: ∑
+  \textsubscript{i∈I} c\textsubscript{ij}≥ 1 ∀j∈J.
+\end{itemize}
+
+\textbf{Faculty Preferences:}
+
+\begin{itemize}
+\item
+  Faculty members maintain preference lists of courses ordered by
+  personal preference.
+\end{itemize}
+
+\textbf{Assignment Flexibility:}
+
+\begin{itemize}
+\item
+  Depending on the group the professor is in, the minimum and maximum
+  number of courses he/she can take differs.
+\item
+  A single course can be assigned to a maximum of two faculty members,
+  with a shared load.
+\end{itemize}
+
+\textbf{Optimization Objective:}
+
+\begin{itemize}
+\item
+  Maximize the overall satisfaction of faculty members by aligning
+  course assignments with their preferences.
+\item
+  First, all the CDCs need to be assigned, followed by electives.
+  Maximum number of courses need to be assigned.
+\item
+  Explore and provide single best solution with CDCs as their priority
+  and another solution where CDCS and electives are given equal
+  priority.
+\end{itemize}
+
+\textbf{1.3 Constraints Category-Based Constraints:}
+
+\begin{itemize}
+\item
+  Professors from category "x1'' can have only 0.5 courses. (only one
+  possibility): ∑ \textsubscript{j∈J}
+  x\textsubscript{ij}=0.5c\textsubscript{ij} ∀i where i is in category
+  x1
+\item
+  Professors from category ``x2'' can either take two 0.5 courses or one
+  complete course. (two possibilities): ∑ \textsubscript{j∈J}
+  x\textsubscript{ij}=c\textsubscript{ij} ∀i where i is in category x2.
+\item
+  Professors from category ``x3'' can take less than or equal to 1.5
+  courses which means they can take two 0.5 courses or one complete
+  course or three 0.5 courses or take a complete course and two 0.5
+  courses. (4 possibilities):
+\end{itemize}
+
+\begin{quote}
+∑ \textsubscript{j∈J} x\textsubscript{ij}≤ 1.5c\textsubscript{ij} ∀i
+where i is in category x3
+\end{quote}
+
+\textbf{Course Load Constraints:}
+
+\begin{itemize}
+\item
+  Ensure that the total course load for each faculty member aligns with
+  their category-specific capacity: ∑ \textsubscript{j∈J}
+  x\textsubscript{ij}≤ Capacity of category of j for course i.
+\end{itemize}
+
+\textbf{Preference Consideration:}
+
+\begin{itemize}
+\item
+  Courses can only be assigned if they are present in the faculty
+  member\textquotesingle s preference list: x\textsubscript{ij}≤
+  c\textsubscript{ij} ∀i∈I, ∀j∈J,
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+
+
+\newpage
+  
+  \textbf{\uline{Methods Adopted}}
+\end{enumerate}
+
+\begin{quote}
+\textbf{2.1 Graph Optimization Approach:}
+\end{quote}
+
+\begin{itemize}
+\item
+  To address the complexity of the University Course Assignment System,
+  we adopted a graph optimization approach. This involves representing
+  the problem as a bipartite graph, where professors and courses are
+  nodes, and edges represent relationships based on faculty preferences.
+\end{itemize}
+
+\begin{quote}
+\textbf{2.2 Forming equation:}
+\end{quote}
+
+\begin{itemize}
+\item
+  Each course is split into two equal divisions, each equivalent to 0.5.
+  This splitting allows flexibility in course assignments, accommodating
+  the preferences and capacities of different professor categories.
+  Similarly, each category of professors is divided into fractional
+  units of 0.5. Specifically, x1 is allocated one 0.5 division, x2 is
+  allocated two 0.5 divisions, and x3 is allocated three 0.5 divisions.
+  Combining the divisions of courses and professor categories, the
+  equation is formulated as 2n=
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3} where 2n
+  represents the total number of course divisions available and
+  x\textsubscript{1},x\textsubscript{2},x\textsubscript{3} represent
+  number of professors in each category.
+\end{itemize}
+
+\begin{quote}
+\textbf{2.3 Hungarian Algorithm:}
+\end{quote}
+
+\begin{itemize}
+\item
+  The Hungarian Algorithm is chosen to address the weighted matching
+  aspect of the problem. Each edge in the bipartite graph is assigned a
+  weight corresponding to the priority of the course in the faculty
+  member\textquotesingle s preference list. The Hungarian Algorithm
+  efficiently finds the maximum-weight matching, optimizing the overall
+  satisfaction of faculty members based on their preferences
+\end{itemize}
+
+\begin{quote}
+\textbf{2.4 Implementation Steps Graph Construction:}
+\end{quote}
+
+\begin{itemize}
+\item
+  Create a bipartite graph with faculty members and courses.
+\item
+  Assign weights to edges based on faculty preferences.
+\item
+  We have a cost matrix where we take row and course preferences and
+  column as professor. Mathematically represented by
+  \{c\textsubscript{ij}\}\textsubscript{N x N}
+\item
+  It is then converted to a binary matrix represented by
+  \{x\textsubscript{ij}\}\textsubscript{N x N} where
+  x\textsubscript{ij}=1 if and only if ith course preference is allotted
+  to jth professor.
+\item
+  Then, we find the minimum number of rows and columns required to cover
+  all zeros.
+\item
+  Since Hungarian algorithm works efficiently for square matrices, we
+  add rows and columns necessary to ensure minimum coverage.
+\item
+  The Hungarian Algorithm is applied to find the maximum-weight matching
+  based on faculty preferences. Each faculty member is matched with the
+  course that maximizes their satisfaction, considering the weights
+  assigned to edges.
+\item
+  Flexibility Adjustment: Explore modifications to enhance flexibility,
+  such as adjusting the maximum number of courses for each category.
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{4}
+  \item
+    \textbf{Functions in executable code}
+  \end{enumerate}
+\end{itemize}
+
+\begin{itemize}
+\item
+  Main.py
+
+  \begin{itemize}
+  \item
+    process\_csv() - a function to process data from the csv file to
+    make 3 lists of course -- CDC,ELEC,ALL COURSES..
+  \item
+    cdc\_hung\_assignment() -- a function used to process the CDC list
+    to a CDC Array so it can be passed to the Hungarian algorithm and
+    return the optimal assignment of cdc courses
+  \item
+    list\_to\_dict() -- a function that converts the lists to a common
+    dictionary
+  \item
+    assignments\_check() -- a function to check if all profs and courses
+    are assigned appropriately
+  \item
+    elec\_hung\_assignments() - a function used to process the ELEC list
+    to a ELEC Array so it can be passed to Hungarian algorithm and
+    return the optimal assignment of ELEC courses
+  \item
+    all\_assignments() - a function used to process the COURSES list to
+    a COURSES array so it can be passed to the Hungarian algorithm and
+    return the optimal assignment of all courses
+  \end{itemize}
+\item
+  hungarian\_algo.py.
+
+  \begin{itemize}
+  \item
+    An algorithm that helps us generate the most optimal solution for a
+    given input matrix.
+  \end{itemize}
+\end{itemize}
+
+\textbf{2.6 Expected Outcome}
+
+\begin{itemize}
+\item
+  The expected outcome is an array of multiple acceptable combinations
+  of assignments, each maximizing course assignments while respecting
+  faculty preferences and category-based constraints. The graph
+  optimization approach provides a robust framework for exploring
+  diverse solutions. This report outlines the problem formulation and
+  methods adopted for the University Course Assignment System,
+  emphasizing the exploration of multiple acceptable combinations.
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  \textbf{\hfill\break
+\newpage
+  \uline{Results under Different Test cases}}
+\end{enumerate}
+
+\begin{itemize}
+\item
+  \textbf{Testcase 1: 3 professors}
+\end{itemize}
+
+\includegraphics[width=6.26389in,height=2.24097in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image2.jpeg}\includegraphics[width=6.26389in,height=1.81667in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image3.jpeg}
+
+2. \textbf{Testcase 2: 10 professors}
+
+\includegraphics[width=6.26389in,height=2.14931in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image4.jpeg}
+
+\includegraphics[width=4.58542in,height=2.23333in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image5.jpeg}
+
+\textbf{Testcase 3:} \textbf{20
+professors}\includegraphics[width=6.26389in,height=2.75972in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image6.jpeg}
+
+\includegraphics[width=5.99722in,height=4.39087in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image7.jpeg}
+
+\textbf{Testcase 4: 30 professors}
+
+\includegraphics[width=6.26389in,height=2.99861in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image8.jpeg}
+
+\includegraphics[width=6.26389in,height=5.20139in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image9.jpeg}
+
+
+\newpage
+\textbf{\uline{4.Crash Test}}
+
+Our algorithm remains consistent with the equation 2n\textgreater=
+x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3} where n is
+the number of courses, x\textsubscript{1} is the number of
+x\textsubscript{1} professors, x\textsubscript{2} is the number of
+x\textsubscript{2} professors and x\textsubscript{3} is the number of
+x\textsubscript{3} professors. If 2n is lesser than
+x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, profs will
+go unassigned, which is recognized as a crash case.
+
+Usually, each course is divided into divisions of 0.5 to accommodate
+preferences of x\textsubscript{1}, x\textsubscript{2} and
+x\textsubscript{3} categories. Ideally, a one to one mapping would occur
+with each professor being assigned a 0.5 division of a course. This is
+feasible when the number of available courses is greater than or equal
+to the sum of capacities of professor categories.
+
+A crash case occurs when there are more professors than available
+courses, making it impossible to maintain a one-to-one mapping. This
+excess of professors may lead to unassigned individuals or unallocated
+course divisions. The crash case arises from a shortage of available
+course divisions to accommodate all professors and the algorithm faces a
+challenge in balancing the mapping. It must decide which professors
+receive course divisions and which may go unassigned. For example, if
+there are only 10 course divisions (each of 0.5) available, but there
+are 15 professors in total, a one-to-one mapping cannot be achieved.
+
+The algorithm will provide feedback indicating the unassigned professors
+and potentially suggest alternative strategies for mapping in situations
+where a one-to-one mapping cannot be maintained. Users may need to
+adjust input parameters, redistribute capacities, or consider
+alternative preferences to achieve a more balanced assignment. By
+addressing this crash case, the algorithm becomes more robust and
+user-friendly, providing valuable insights and options for users to
+handle scenarios where the number of professors surpasses the available
+course divisions.
+\newpage
+\textbf{\uline{5. Consistency Report}}
+
+The consistency report will emphasize the algorithm's handling of
+various scenarios and performance under different conditions. Three
+important cases to consider:
+
+\begin{itemize}
+\item
+  Unassigned electives: If 2n is greater than
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, electives
+  will go unassigned, but all CDC's will still be assigned.
+\item
+  Maximum assignment: If 2n is equal to
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, every
+  course is assigned.
+\item
+  Minimum assignment: If 2n is lesser than
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, profs will
+  go unassigned, which is recognized as a crash case.
+\end{itemize}
+
+The algorithm\textquotesingle s consistency is tested by evaluating its
+sensitivity to changes in the number of courses (n) and the distribution
+of professors in different categories
+(x\textsubscript{1},x\textsubscript{2},x\textsubscript{3}) The algorithm
+is assessed on how it behaves in extreme cases, such as when one
+professor category dominates. When one professor category dominates,
+there can be several implications. The dominating
+category\textquotesingle s preferences might disproportionately
+influence the overall assignment. If their preferences align with
+available courses, they may secure a higher number of preferred courses
+compared to other categories. Categories with fewer professors may face
+challenges in getting their preferred courses assigned if the dominating
+category exhausts the available courses. This could lead to unassigned
+professors in the underrepresented categories.
+
+The algorithm\textquotesingle s code is well-documented, including
+explanations for how the equation is implemented and how crash cases are
+handled. If professors go unassigned, it thoroughly analyzes and reports
+the reasons for unassignments. Verifies that the output format remains
+consistent across multiple runs. Describes the feedback or error
+messages provided by the algorithm when constraints are not met. Ensures
+clear communication of issues related to unassigned professors or
+courses.
+
+The university course allotment algorithm maintains consistency by
+addressing crash test cases, providing feedback and offering
+optimization strategies.
+\newpage
+\uline{Bibliography}
+
+\begin{itemize}
+\item
+  GUNAWAN, Aldy and NG, Kien Ming, ``Solving the teacher assignment
+  problem by two Metaheuristics'',
+  (2011),\url{https://ink.library.smu.edu.sg/cgi/viewcontent.cgi?article=5005\&context=sis_research}
+\end{itemize}
+
+\begin{itemize}
+\item
+  Elvira E. Ongy,''Optimizing Student Learning: A Faculty-Course
+  Assignment Problem using Linear Programming'',Journal of Science,
+  Engineering and Technology, 2017,
+  \url{https://www.researchgate.net/profile/Elvira-Ongy/publication/327721528_Optimizing_Student_Learning_A_Faculty-Course_Assignment_Problem_Using_Linear_Programming/links/5ba0cc6945851574f7d2a668/Optimizing-Student-Learning-A-Faculty-Course-Assignment-Problem-Using-Linear-Programming.pdf}
+\item
+  Yash Varyani, ``Hungarian Algorithm for Assignment
+  Problem'',2023,\url{https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/}
+\item
+  Victor Keesey Fuentes, ``Assigning Teacher Assistants to Courses:
+  Mathematic
+  Models,\url{https://www.math.ucdavis.edu/~webfiles/undergrad_thesis/201403_Victor_Fuentes_DeLoera.pdf}
+\item
+  Guiming Luo,''The importance of Fuzzy Preference in Course Assignment
+  Problem'', 25 Oct 2015,
+  \url{https://www.hindawi.com/journals/mpe/2015/106727/}
+\item
+  Eason, ``Hungarian Algorithm Introduction and Python
+  Implementation'',2021,
+  \url{https://plainenglish.io/blog/hungarian-algorithm-introduction-python-implementation-93e7c0890e15}
+\end{itemize}
+
+\end{document}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\usepackage[normalem]{ulem}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\textbf{Application of Graph Optimization-}
+
+\textbf{University Course Allotment Project}
+
+\includegraphics[width=3.12847in,height=3.12847in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image1.jpeg}
+
+Group Members:
+
+Bhuvan Satrasala-2022A7PS0018G
+
+Ishita Godani-2022A7PS0007G
+
+Trisha Reddy-2022A7PS0009G
+
+\newpage
+
+
+\textbf{\uline{ABSTRACT}}
+This research addresses the optimization of a University Course
+Assignment System, considering faculty categorization, variable course
+loads, and individual preferences. Faculty members, categorized into x1,
+x2, and x3, face course loads of 0.5, 1, and 1.5 per semester. The
+challenge involves maximizing course assignments to faculty while
+adhering to category-based constraints and preferences. Hungarian
+Algorithm is explored for potential solutions. The implementation
+involves constructing bipartite graphs, converting to maximization form,
+and considering faculty categories, course load capacities, and
+preferences. The proposed system aims to offer a flexible and adaptive
+approach to maximize faculty satisfaction.
+\newpage
+\textbf{Contents}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Problem Formulation}
+\item
+  \textbf{Methods Adopted}
+\item
+  \textbf{Results under different test cases}
+\item
+  \textbf{Crash Test}
+\item
+  \textbf{Consistency Report}
+\item
+  \textbf{Bibliography}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+\newpage
+  \textbf{\uline{Problem formulation}}
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    \textbf{Overview}
+  \end{enumerate}
+\end{enumerate}
+
+University course assignment is one of the most crucial parts of a
+university system, influencing both faculty satisfaction and the
+efficient utilization of resources. The University Course Assignment
+System aims to optimize the allocation of courses to faculty members
+within a department. The primary objective is to maximize the number of
+courses assigned to faculty while considering individual preferences,
+professor categories, and course load constraints. In addition, the
+system should explore and provide multiple acceptable combinations of
+assignments.
+
+\textbf{1.2 Problem Statement}
+
+\textbf{Mathematical Representation:}
+
+\begin{itemize}
+\item
+  Sets: Let I be the set of courses, where i∈I.
+\end{itemize}
+
+\begin{quote}
+Let J be the set of professors, where j∈J
+\end{quote}
+
+\begin{itemize}
+\item
+  Parameters: x\textsubscript{ij} \hspace{0pt} is an arbitrary value
+  representing whether course i is assigned to professor j. (1 -- 10 if
+  assigned, 1000 otherwise)
+\item
+  Decision variable: c\textsubscript{ij}\hspace{0pt} is a arbitrary
+  value indicating whether professor j has course i in their preference
+  list. (1 if in preference, 1000 otherwise)
+\item
+  Objective Function: Minimize Z = ∑ \textsubscript{i∈I} ∑
+  \textsubscript{j∈J} c\textsubscript{ij}.x\textsubscript{ij}
+\end{itemize}
+
+\textbf{Faculty Categorization:}
+
+\begin{itemize}
+\item
+  Each category has different course load capacities: 0.5 courses for
+  "x1," 1 course for "x2," and 1.5 courses for "x3."
+\item
+  No professor can have 0 courses in their preference list: ∑
+  \textsubscript{i∈I} c\textsubscript{ij}≥ 1 ∀j∈J.
+\end{itemize}
+
+\textbf{Faculty Preferences:}
+
+\begin{itemize}
+\item
+  Faculty members maintain preference lists of courses ordered by
+  personal preference.
+\end{itemize}
+
+\textbf{Assignment Flexibility:}
+
+\begin{itemize}
+\item
+  Depending on the group the professor is in, the minimum and maximum
+  number of courses he/she can take differs.
+\item
+  A single course can be assigned to a maximum of two faculty members,
+  with a shared load.
+\end{itemize}
+
+\textbf{Optimization Objective:}
+
+\begin{itemize}
+\item
+  Maximize the overall satisfaction of faculty members by aligning
+  course assignments with their preferences.
+\item
+  First, all the CDCs need to be assigned, followed by electives.
+  Maximum number of courses need to be assigned.
+\item
+  Explore and provide single best solution with CDCs as their priority
+  and another solution where CDCS and electives are given equal
+  priority.
+\end{itemize}
+
+\textbf{1.3 Constraints Category-Based Constraints:}
+
+\begin{itemize}
+\item
+  Professors from category "x1'' can have only 0.5 courses. (only one
+  possibility): ∑ \textsubscript{j∈J}
+  x\textsubscript{ij}=0.5c\textsubscript{ij} ∀i where i is in category
+  x1
+\item
+  Professors from category ``x2'' can either take two 0.5 courses or one
+  complete course. (two possibilities): ∑ \textsubscript{j∈J}
+  x\textsubscript{ij}=c\textsubscript{ij} ∀i where i is in category x2.
+\item
+  Professors from category ``x3'' can take less than or equal to 1.5
+  courses which means they can take two 0.5 courses or one complete
+  course or three 0.5 courses or take a complete course and two 0.5
+  courses. (4 possibilities):
+\end{itemize}
+
+\begin{quote}
+∑ \textsubscript{j∈J} x\textsubscript{ij}≤ 1.5c\textsubscript{ij} ∀i
+where i is in category x3
+\end{quote}
+
+\textbf{Course Load Constraints:}
+
+\begin{itemize}
+\item
+  Ensure that the total course load for each faculty member aligns with
+  their category-specific capacity: ∑ \textsubscript{j∈J}
+  x\textsubscript{ij}≤ Capacity of category of j for course i.
+\end{itemize}
+
+\textbf{Preference Consideration:}
+
+\begin{itemize}
+\item
+  Courses can only be assigned if they are present in the faculty
+  member\textquotesingle s preference list: x\textsubscript{ij}≤
+  c\textsubscript{ij} ∀i∈I, ∀j∈J,
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+
+
+\newpage
+  
+  \textbf{\uline{Methods Adopted}}
+\end{enumerate}
+
+\begin{quote}
+\textbf{2.1 Graph Optimization Approach:}
+\end{quote}
+
+\begin{itemize}
+\item
+  To address the complexity of the University Course Assignment System,
+  we adopted a graph optimization approach. This involves representing
+  the problem as a bipartite graph, where professors and courses are
+  nodes, and edges represent relationships based on faculty preferences.
+\end{itemize}
+
+\begin{quote}
+\textbf{2.2 Forming equation:}
+\end{quote}
+
+\begin{itemize}
+\item
+  Each course is split into two equal divisions, each equivalent to 0.5.
+  This splitting allows flexibility in course assignments, accommodating
+  the preferences and capacities of different professor categories.
+  Similarly, each category of professors is divided into fractional
+  units of 0.5. Specifically, x1 is allocated one 0.5 division, x2 is
+  allocated two 0.5 divisions, and x3 is allocated three 0.5 divisions.
+  Combining the divisions of courses and professor categories, the
+  equation is formulated as 2n=
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3} where 2n
+  represents the total number of course divisions available and
+  x\textsubscript{1},x\textsubscript{2},x\textsubscript{3} represent
+  number of professors in each category.
+\end{itemize}
+
+\begin{quote}
+\textbf{2.3 Hungarian Algorithm:}
+\end{quote}
+
+\begin{itemize}
+\item
+  The Hungarian Algorithm is chosen to address the weighted matching
+  aspect of the problem. Each edge in the bipartite graph is assigned a
+  weight corresponding to the priority of the course in the faculty
+  member\textquotesingle s preference list. The Hungarian Algorithm
+  efficiently finds the maximum-weight matching, optimizing the overall
+  satisfaction of faculty members based on their preferences
+\end{itemize}
+
+\begin{quote}
+\textbf{2.4 Implementation Steps Graph Construction:}
+\end{quote}
+
+\begin{itemize}
+\item
+  Create a bipartite graph with faculty members and courses.
+\item
+  Assign weights to edges based on faculty preferences.
+\item
+  We have a cost matrix where we take row and course preferences and
+  column as professor. Mathematically represented by
+  \{c\textsubscript{ij}\}\textsubscript{N x N}
+\item
+  It is then converted to a binary matrix represented by
+  \{x\textsubscript{ij}\}\textsubscript{N x N} where
+  x\textsubscript{ij}=1 if and only if ith course preference is allotted
+  to jth professor.
+\item
+  Then, we find the minimum number of rows and columns required to cover
+  all zeros.
+\item
+  Since Hungarian algorithm works efficiently for square matrices, we
+  add rows and columns necessary to ensure minimum coverage.
+\item
+  The Hungarian Algorithm is applied to find the maximum-weight matching
+  based on faculty preferences. Each faculty member is matched with the
+  course that maximizes their satisfaction, considering the weights
+  assigned to edges.
+\item
+  Flexibility Adjustment: Explore modifications to enhance flexibility,
+  such as adjusting the maximum number of courses for each category.
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{4}
+  \item
+    \textbf{Functions in executable code}
+  \end{enumerate}
+\end{itemize}
+
+\begin{itemize}
+\item
+  Main.py
+
+  \begin{itemize}
+  \item
+    process\_csv() - a function to process data from the csv file to
+    make 3 lists of course -- CDC,ELEC,ALL COURSES..
+  \item
+    cdc\_hung\_assignment() -- a function used to process the CDC list
+    to a CDC Array so it can be passed to the Hungarian algorithm and
+    return the optimal assignment of cdc courses
+  \item
+    list\_to\_dict() -- a function that converts the lists to a common
+    dictionary
+  \item
+    assignments\_check() -- a function to check if all profs and courses
+    are assigned appropriately
+  \item
+    elec\_hung\_assignments() - a function used to process the ELEC list
+    to a ELEC Array so it can be passed to Hungarian algorithm and
+    return the optimal assignment of ELEC courses
+  \item
+    all\_assignments() - a function used to process the COURSES list to
+    a COURSES array so it can be passed to the Hungarian algorithm and
+    return the optimal assignment of all courses
+  \end{itemize}
+\item
+  hungarian\_algo.py.
+
+  \begin{itemize}
+  \item
+    An algorithm that helps us generate the most optimal solution for a
+    given input matrix.
+  \end{itemize}
+\end{itemize}
+
+\textbf{2.6 Expected Outcome}
+
+\begin{itemize}
+\item
+  The expected outcome is an array of multiple acceptable combinations
+  of assignments, each maximizing course assignments while respecting
+  faculty preferences and category-based constraints. The graph
+  optimization approach provides a robust framework for exploring
+  diverse solutions. This report outlines the problem formulation and
+  methods adopted for the University Course Assignment System,
+  emphasizing the exploration of multiple acceptable combinations.
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  \textbf{\hfill\break
+\newpage
+  \uline{Results under Different Test cases}}
+\end{enumerate}
+
+\begin{itemize}
+\item
+  \textbf{Testcase 1: 3 professors}
+\end{itemize}
+
+\includegraphics[width=6.26389in,height=2.24097in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image2.jpeg}\includegraphics[width=6.26389in,height=1.81667in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image3.jpeg}
+
+2. \textbf{Testcase 2: 10 professors}
+
+\includegraphics[width=6.26389in,height=2.14931in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image4.jpeg}
+
+\includegraphics[width=4.58542in,height=2.23333in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image5.jpeg}
+
+\textbf{Testcase 3:} \textbf{20
+professors}\includegraphics[width=6.26389in,height=2.75972in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image6.jpeg}
+
+\includegraphics[width=5.99722in,height=4.39087in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image7.jpeg}
+
+\textbf{Testcase 4: 30 professors}
+
+\includegraphics[width=6.26389in,height=2.99861in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image8.jpeg}
+
+\includegraphics[width=6.26389in,height=5.20139in]{vertopal_7f1891e7cc57440590deaa917bedd1aa/media/image9.jpeg}
+
+
+\newpage
+\textbf{\uline{4.Crash Test}}
+
+Our algorithm remains consistent with the equation 2n\textgreater=
+x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3} where n is
+the number of courses, x\textsubscript{1} is the number of
+x\textsubscript{1} professors, x\textsubscript{2} is the number of
+x\textsubscript{2} professors and x\textsubscript{3} is the number of
+x\textsubscript{3} professors. If 2n is lesser than
+x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, profs will
+go unassigned, which is recognized as a crash case.
+
+Usually, each course is divided into divisions of 0.5 to accommodate
+preferences of x\textsubscript{1}, x\textsubscript{2} and
+x\textsubscript{3} categories. Ideally, a one to one mapping would occur
+with each professor being assigned a 0.5 division of a course. This is
+feasible when the number of available courses is greater than or equal
+to the sum of capacities of professor categories.
+
+A crash case occurs when there are more professors than available
+courses, making it impossible to maintain a one-to-one mapping. This
+excess of professors may lead to unassigned individuals or unallocated
+course divisions. The crash case arises from a shortage of available
+course divisions to accommodate all professors and the algorithm faces a
+challenge in balancing the mapping. It must decide which professors
+receive course divisions and which may go unassigned. For example, if
+there are only 10 course divisions (each of 0.5) available, but there
+are 15 professors in total, a one-to-one mapping cannot be achieved.
+
+The algorithm will provide feedback indicating the unassigned professors
+and potentially suggest alternative strategies for mapping in situations
+where a one-to-one mapping cannot be maintained. Users may need to
+adjust input parameters, redistribute capacities, or consider
+alternative preferences to achieve a more balanced assignment. By
+addressing this crash case, the algorithm becomes more robust and
+user-friendly, providing valuable insights and options for users to
+handle scenarios where the number of professors surpasses the available
+course divisions.
+\newpage
+\textbf{\uline{5. Consistency Report}}
+
+The consistency report will emphasize the algorithm's handling of
+various scenarios and performance under different conditions. Three
+important cases to consider:
+
+\begin{itemize}
+\item
+  Unassigned electives: If 2n is greater than
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, electives
+  will go unassigned, but all CDC's will still be assigned.
+\item
+  Maximum assignment: If 2n is equal to
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, every
+  course is assigned.
+\item
+  Minimum assignment: If 2n is lesser than
+  x\textsubscript{1}+2x\textsubscript{2}+3x\textsubscript{3}, profs will
+  go unassigned, which is recognized as a crash case.
+\end{itemize}
+
+The algorithm\textquotesingle s consistency is tested by evaluating its
+sensitivity to changes in the number of courses (n) and the distribution
+of professors in different categories
+(x\textsubscript{1},x\textsubscript{2},x\textsubscript{3}) The algorithm
+is assessed on how it behaves in extreme cases, such as when one
+professor category dominates. When one professor category dominates,
+there can be several implications. The dominating
+category\textquotesingle s preferences might disproportionately
+influence the overall assignment. If their preferences align with
+available courses, they may secure a higher number of preferred courses
+compared to other categories. Categories with fewer professors may face
+challenges in getting their preferred courses assigned if the dominating
+category exhausts the available courses. This could lead to unassigned
+professors in the underrepresented categories.
+
+The algorithm\textquotesingle s code is well-documented, including
+explanations for how the equation is implemented and how crash cases are
+handled. If professors go unassigned, it thoroughly analyzes and reports
+the reasons for unassignments. Verifies that the output format remains
+consistent across multiple runs. Describes the feedback or error
+messages provided by the algorithm when constraints are not met. Ensures
+clear communication of issues related to unassigned professors or
+courses.
+
+The university course allotment algorithm maintains consistency by
+addressing crash test cases, providing feedback and offering
+optimization strategies.
+\newpage
+\uline{Bibliography}
+
+\begin{itemize}
+\item
+  GUNAWAN, Aldy and NG, Kien Ming, ``Solving the teacher assignment
+  problem by two Metaheuristics'',
+  (2011),\url{https://ink.library.smu.edu.sg/cgi/viewcontent.cgi?article=5005\&context=sis_research}
+\end{itemize}
+
+\begin{itemize}
+\item
+  Elvira E. Ongy,''Optimizing Student Learning: A Faculty-Course
+  Assignment Problem using Linear Programming'',Journal of Science,
+  Engineering and Technology, 2017,
+  \url{https://www.researchgate.net/profile/Elvira-Ongy/publication/327721528_Optimizing_Student_Learning_A_Faculty-Course_Assignment_Problem_Using_Linear_Programming/links/5ba0cc6945851574f7d2a668/Optimizing-Student-Learning-A-Faculty-Course-Assignment-Problem-Using-Linear-Programming.pdf}
+\item
+  Yash Varyani, ``Hungarian Algorithm for Assignment
+  Problem'',2023,\url{https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/}
+\item
+  Victor Keesey Fuentes, ``Assigning Teacher Assistants to Courses:
+  Mathematic
+  Models,\url{https://www.math.ucdavis.edu/~webfiles/undergrad_thesis/201403_Victor_Fuentes_DeLoera.pdf}
+\item
+  Guiming Luo,''The importance of Fuzzy Preference in Course Assignment
+  Problem'', 25 Oct 2015,
+  \url{https://www.hindawi.com/journals/mpe/2015/106727/}
+\item
+  Eason, ``Hungarian Algorithm Introduction and Python
+  Implementation'',2021,
+  \url{https://plainenglish.io/blog/hungarian-algorithm-introduction-python-implementation-93e7c0890e15}
+\end{itemize}
+
+\end{document}
