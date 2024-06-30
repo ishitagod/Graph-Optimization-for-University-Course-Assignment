@@ -23,12 +23,12 @@ Faculty members can take multiple courses, and a single course can be assigned t
 ## Constraints and Assumptions
 Faculty members must provide their preferences for at least:
 
-4 FD CDC (Foundation Courses for Department Core Courses)
-4 FD Ele (Foundation Courses for Electives)
-2 HD CDC (Higher Department Core Courses)
-2 HD Ele (Higher Department Electives)
-A professor of category x2 (course limit 1) cannot be assigned only 0.5 courses if assigning 1 course isn't possible.
+- 4 FD CDC (Foundation Courses for Department Core Courses)
+- 4 FD Ele (Foundation Courses for Electives)
+- 2 HD CDC (Higher Department Core Courses)
+- 2 HD Ele (Higher Department Electives)
 
+A professor of category x2 (course limit 1) cannot be assigned only 0.5 courses if assigning 1 course isn't possible.
 If the assignment is below the course load limit, it should result in a crash test to ensure valid assignment.
 
 ## Contributors 
