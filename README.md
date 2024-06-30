@@ -32,6 +32,6 @@ A professor of category x2 (course limit 1) cannot be assigned only 0.5 courses 
 If the assignment is below the course load limit, it should result in a crash test to ensure valid assignment.
 
 ## Contributors 
-* [@ishitagod](https://github.com/ishitagod)
-* [@trishareddy19](https://github.com/trishareddy19)
-* [@Bhuvans00110](https://github.com/Bhuvans00110)
+* Ishita Godani [@ishitagod](https://github.com/ishitagod)
+* Trisha L Reddy [@trishareddy19](https://github.com/trishareddy19)
+* Bhuvan Satrasala [@Bhuvans00110](https://github.com/Bhuvans00110)
