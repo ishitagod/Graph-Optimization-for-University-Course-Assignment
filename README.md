@@ -33,5 +33,5 @@ If the assignment is below the course load limit, it should result in a crash te
 
 ## Contributors 
 * Ishita Godani [@ishitagod](https://github.com/ishitagod)
-* Trisha L Reddy [@trishareddy19](https://github.com/trishareddy19)
+* Trisha L Reddy [@trisha2004](http://github.com/trisha2004)
 * Bhuvan Satrasala [@Bhuvans00110](https://github.com/Bhuvans00110)
